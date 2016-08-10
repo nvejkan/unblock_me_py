@@ -69,13 +69,13 @@ def acyclic_block(bx):
             print("blockers",blockers)
             if '*' in blockers:
                 cyclic = True
-                return False # this is cyclic board
+                return (False,None,None) # this is cyclic board
             
     #print(s)
     #print(all_pos)
     print(free_move)
     print(dict_i_s)
-    return True #this is acyclic board 
+    return (True,dict_i_s,free_move) #this is acyclic board 
 
 def find_possible_board(b):
     all_pos = {}
@@ -117,7 +117,7 @@ def can_go(bx,bname,direct,src_start,src_end,des_start,des_end):
     max_c = max([ i[1] for i in [src_start,src_end,des_start,des_end]])
     min_r = min([ i[0] for i in [src_start,src_end,des_start,des_end]])
     min_c = min([ i[1] for i in [src_start,src_end,des_start,des_end]])
-    
+    True,dict_i_s,free_move
     s_i = bx.get_board().loc['r{0}'.format(min_r):'r{0}'.format(max_r)\
                             ,'c{0}'.format(min_c):'c{0}'.format(max_c)].astype('str')
     if direct == "right":
@@ -130,5 +130,14 @@ def can_go(bx,bname,direct,src_start,src_end,des_start,des_end):
 
     #print(bname,"CAN GO ",s_i)
     return s_i
-print(acyclic_block(x))
-print(acyclic_block(b_cy))
+#print(acyclic_block(x))
+#print(acyclic_block(b_cy))
+
+def move_acyclic_board(bx,dict_i_s,free_move):
+    pass
+for b in [x,b_cy]:
+    is_acyclic,dict_i_s,free_move = acyclic_block(b)
+    #dict_i_s {'B': ((3, 0), (3, 1)), 'D': ((4, 0), (4, 1)), 'H': ((0, 5), (1, 5)), 'E': ((5, 0), (5, 1))}
+    #free_move {'G': {'D', 'E'}, '*': {'G', 'H', 'F'}, 'F': {'B'}}
+    if is_acyclic:
+        move_acyclic_board(bx,dict_i_s,free_move)
