@@ -104,22 +104,26 @@ def bfs( start, limit ):
             return moves
         elif is_acyclic:
             print("Acyclic!")
-            print(node.state.get_board())
-            print(node.state.blocks)
-            acyclic_moves = acyclic_solver(node.state)
-            #print(acyclic_moves)
-            print("Solution found!")
-            moves = []
-            temp = node
-            while True:
-                if temp.depth <= 1: 
-                    break
-                moves.insert(0, temp.state.get_board())
-                temp = temp.parent
-            #print(count,moves)
-            #print(moves)
-            moves.extend(acyclic_moves)
-            return moves
+            #print(node.state.get_board())
+            #print(node.state.blocks)
+            temp = Board()
+            temp.blocks = node.state.blocks.copy()
+            acyclic_moves = acyclic_solver(temp)
+            if acyclic_moves != False:
+                #print(acyclic_moves)
+                print("Solution found!")
+                acyclic_moves = [ j.get_board() for j in acyclic_moves]
+                moves = []
+                temp = node
+                while True:
+                    if temp.depth <= 1: 
+                        break
+                    moves.insert(0, temp.state.get_board())
+                    temp = temp.parent
+                #print(count,moves)
+                #print(moves)
+                moves.extend(acyclic_moves)
+                return moves
         
         # Expand the node and add all the expansions to the front of the stack
         
@@ -497,19 +501,21 @@ def acyclic_solver(b):
         if is_acyclic:
             b = move_acyclic_board(b,dict_i_s,free_move,'*') # start to move '*'
             #print(b.get_board())
-            moves.append(b)
+            new_b = Board()
+            new_b.blocks = b.blocks.copy()
+            moves.append(new_b)
             if is_final_board(b):
                 #print("Solution found")
                 return moves
         else:
             #print("Cyclic")
-            break
+            return False
 if __name__ == "__main__":
     #run_game(b1)
     b1 = Board()
     
     #Easy
-    
+    '''
     b1.place_block(('*',2,'right'),(2,0))
     
     
@@ -532,7 +538,7 @@ if __name__ == "__main__":
     
     b1.place_block(('G',3,'right'),(4,0))
     
-    '''HARD
+    '''
     b1.place_block(('*',2,'right'),(2,0))
     
     b1.place_block(('A',2,'down'),(0,0))
@@ -550,17 +556,17 @@ if __name__ == "__main__":
     b1.place_block(('G',3,'down'),(1,4))
     
     b1.place_block(('H',2,'down'),(1,5))
-    '''
+    
     
     print(b1.get_board())
     
     
-    #continue_board_list("board.log")
-    #continue_node("all_nodes.log","nodes_left.log","opened_nodes.log")
-    moves = bfs(b1,1000)
+    continue_board_list("board.log")
+    continue_node("all_nodes.log","nodes_left.log","opened_nodes.log")
+    moves = bfs(b1,10000)
     if moves is not None:
         for i in moves:
-            print(i.get_board())
+            print(i)
 
     print('*********ENDED**************')     
 
