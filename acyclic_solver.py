@@ -513,12 +513,12 @@ def acyclic_solver(b):
             return False
 if __name__ == "__main__":
     #run_game(b1)
-    b1 = game_list.get_board_game(5)
+    b1 = game_list.get_board_game(498)
     print(b1.get_board())
     
     
-    continue_board_list("board.log")
-    continue_node("all_nodes.log","nodes_left.log","opened_nodes.log")
+    #continue_board_list("board.log")
+    #continue_node("all_nodes.log","nodes_left.log","opened_nodes.log")
     moves = bfs(b1,10000)
     if moves is not None:
         for i in moves:
